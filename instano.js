@@ -27,7 +27,14 @@ var instano = (function (el) {
 		}
 	  }
 	}
-	if (window.opera && window.opera.buildNumber) { alert(window.opera.buildNumber);}
+	
+	// Special treatment for opera
+	if (window.opera && window.opera.buildNumber) {
+		if (parseFloat(window.opera.version()) >= 12) {
+			animation = true;
+		}
+	}
+	
 	if (animation) {
 		// Create the CSS animation class
 		var css = 
