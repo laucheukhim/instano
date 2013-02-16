@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>instano.js</title>
+<link href='reset.css' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+<style>
+body {
+	font-size: 14px;
+	line-height: 20px;
+	font-family: 'Roboto', sans-serif;
+	font-weight: 300;
+}
+
+pre {
+	padding: 5px;
+	font-size: 12px;
+	font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+	margin-bottom: 10px;
+	background-color: #fafafa;
+	overflow: auto;
+	width: auto;
+	width: 650px !ie7;
+	padding-bottom: 20px !ie7;
+	max-height: 600px;
+	border: 1px solid #eaeaea;
+	border-radius: 3px;
+}
+
+code {
+	font-size: 12px;
+	line-height: 16px;
+	font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+	color: #222;
+	background-color: #fafafa;
+	border: 1px solid #eaeaea;
+	border-radius: 3px;
+	padding: 2px;
+}
+
+pre code {
+	border: none;
+	background: none;
+}
+
+a:link, a:visited, a:hover, a:active {
+	color: #dd3333;
+	text-decoration: none;
+}
+
+p {
+	margin-bottom: 10px;
+}
+</style>
+<style>
+#main {
+	padding-top: 50px;
+	margin: 0 auto;
+	width: 960px;
+	min-height: 450px;
+}
+#banner-message {
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 900;
+	background: #dd3333;
+	text-align: center;
+	color: #ffffff;
+}
+#banner-padding {
+	width: 100%;
+	height: 20px;
+}
+#top {
+	position: relative;
+	margin-bottom: 20px;
+	clear: both;
+	height: 100px;
+}
+.left {
+	position:absolute;
+	left:0;
+}
+.right {
+	position:absolute;
+	bottom:0;
+	right:0;
+	max-width: 500px;
+}
+#logo {
+	font-size: 80px;
+	line-height: 80px;
+	font-weight: 100;
+	color: #880000;
+}
+#logo span.emphasis {
+	font-weight: 900;
+	color: #dd3333;
+}
+#sublogo {
+	margin-top: -10px;
+	margin-left: 5px;
+	float: left;
+}
+#indicator {
+	text-align: right;
+}
+.instructions {
+	float: right;
+}
+.label {
+	background: #dd3333;
+	border-radius: 3px;
+	color: #ffffff;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+#compare {
+	margin-bottom: 20px;
+}
+#compare-noscript, #compare-instano {
+}
+.clear {
+	clear: both;
+}
+.title, .big-title {
+	font-size: 24px;
+	line-height: 30px;
+	font-weight: 500;
+	color: #dd3333;
+}
+.big-title {
+	font-size: 30px;
+}
+.compare-title {
+	float: left;
+}
+.compare-result {
+	float: right;
+	line-height: 30px;
+}
+#browser-compatibility {
+	margin-bottom: 10px;
+}
+.browser-version {
+	height: 30px;
+	line-height: 30px;
+	margin-left: 3px;
+	margin-right: 7px;
+	display: inline-block;
+}
+.chrome {
+	background-image:url('browsers.png');
+	background-size: auto 30px;
+	background-position:0px 0px;
+	height: 30px;
+	width: 30px;
+	display: inline-block;
+	vertical-align: middle;
+}
+.firefox {
+	background-image:url('browsers.png');
+	background-size: auto 30px;
+	background-position:-34px 0px;
+	height: 30px;
+	width: 30px;
+	display: inline-block;
+	vertical-align: middle;
+}
+.opera {
+	background-image:url('browsers.png');
+	background-size: auto 30px;
+	background-position:-65px 0px;
+	height: 30px;
+	width: 30px;
+	display: inline-block;
+	vertical-align: middle;
+}
+.safari {
+	background-image:url('browsers.png');
+	background-size: auto 30px;
+	background-position:-97px 0px;
+	height: 30px;
+	width: 30px;
+	display: inline-block;
+	vertical-align: middle;
+}
+.ie {
+	background-image:url('browsers.png');
+	background-size: auto 30px;
+	background-position:-133px 0px;
+	height: 30px;
+	width: 30px;
+	display: inline-block;
+	vertical-align: middle;
+}
+@media
+only screen and (-webkit-min-device-pixel-ratio: 2)      and (min-width: 700px),
+only screen and (   min--moz-device-pixel-ratio: 2)      and (min-width: 700px),
+only screen and (     -o-min-device-pixel-ratio: 2/1)    and (min-width: 700px),
+only screen and (        min-device-pixel-ratio: 2)      and (min-width: 700px),
+only screen and (                min-resolution: 192dpi) and (min-width: 700px),
+only screen and (                min-resolution: 2dppx)  and (min-width: 700px) { 
+
+.chrome {
+	background-image:url('browsers@2x.png');
+	background-size: auto 30px;
+	background-position:0px 0px;
+	height: 30px;
+	width: 30px;
+	display: inline-block;
+	vertical-align: middle;
+}
+.firefox {
+	background-image:url('browsers@2x.png');
+	background-size: auto 30px;
+	background-position:-34px 0px;
+	height: 30px;
+	width: 30px;
+	display: inline-block;
+	vertical-align: middle;
+}
+.opera {
+	background-image:url('browsers@2x.png');
+	background-size: auto 30px;
+	background-position:-65px 0px;
+	height: 30px;
+	width: 30px;
+	display: inline-block;
+	vertical-align: middle;
+}
+.safari {
+	background-image:url('browsers@2x.png');
+	background-size: auto 30px;
+	background-position:-97px 0px;
+	height: 30px;
+	width: 30px;
+	display: inline-block;
+	vertical-align: middle;
+}
+.ie {
+	background-image:url('browsers@2x.png');
+	background-size: auto 30px;
+	background-position:-133px 0px;
+	height: 30px;
+	width: 30px;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+}
+</style>
+<script type="text/javascript" src="//raw.github.com/laucheukhim/instano/master/instano.js"></script>
+</head>
+<body>
+<a href="https://github.com/laucheukhim/instano"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 1000;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+<div id="banner-message"><noscript>instano.js is currently in Pre-Alpha stage. Development use only.</noscript></div>
+<div id="main">
+<div id="top">
+    <div class="left">
+    <div id="logo">insta<span class="emphasis">no.js</span></div>
+    <div id="sublogo"><noscript>Instant NoScript Detection</noscript></div>
+    </div>
+    <div class="right">
+    <div id="descriptions">instano.js allows you to instantly detect if JavaScript is disabled after the page is loaded. It modifies the standard <code>&lt;noscript&gt;</code> tags so that the messages inside can be shown immediately whenever JavaScript is disabled.</div>
+    <div id="indicator"><span id="enabled-state" class="instructions label"></span><span class="instructions label"><noscript>Turn on JavaScript first and reload the page</noscript></span></div>
+    </div>
+</div>
+<div id="content">
+    <div id="compare">
+        <div id="compare-noscript">
+            <div class="compare-head">
+                <div class="big-title compare-title">noscript</div>
+                <div class="compare-result"><noscript>You have to load the page with JavaScript disabled to see this message.</noscript></div>
+            </div>
+            <div class="clear"></div>
+            <div><pre>&lt;noscript&gt;You have to load the page with JavaScript disabled to see this message.&lt;/noscript&gt;</pre></div>
+        </div>
+        <div id="compare-instano">
+            <div class="compare-head">
+                <div class="big-title compare-title">instano.js</div>
+                <div id="instano-example" class="compare-result"><noscript>You can see this message as soon as JavaScript is disabled.</noscript></div>
+            </div>
+            <div class="clear"></div>
+            <div><pre>&lt;noscript&gt;You can see this message as soon as JavaScript is disabled.&lt;/noscript&gt;
+&lt;script type="text/javascript">instano().init();&lt;/script&gt;</pre></div>
+        </div>
+    </div>
+    <div class="title">Download</div>
+    <p>instano.js is currently in Pre-Alpha stage. Download the source code on <a href="https://github.com/laucheukhim/instano" target="_blank">Github</a> (development use only).</p>
+    <div class="title">Browser Compatibility</div>
+    <p>instano.js uses plain JavaScript and <code>@keyframes</code> CSS animation.</p>
+    <div id="browser-compatibility">
+    	<div class="chrome"></div><div class="browser-version">(Yes)</div>
+        <div class="firefox"></div><div class="browser-version">5.0+</div>
+        <div class="opera"></div><div class="browser-version">10+</div>
+        <div class="safari"></div><div class="browser-version">12+</div>
+        <div class="ie"></div><div class="browser-version">4.0+</div>
+    </div>
+    <div class="title">History</div>
+    <p>This code started as an answer to the Stack Overflow question <a href="http://stackoverflow.com/a/14764039/1493698" target="_blank">"How can a site instantly detect that javascript has been disabled?"</a></p>
+</div>
+</div>
+<script>
+document.getElementById("enabled-state").innerHTML = "Turn off JavaScript now and see the difference";
+instano(["banner-message","sublogo","instructions","instano-example"]).init(50,"block");
+</script>
+</body>
+</html>
