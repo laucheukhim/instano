@@ -89,7 +89,7 @@ p {
 	max-width: 500px;
 }
 #logo {
-	font-size: 80px;
+	font-size: 60px;
 	line-height: 80px;
 	font-weight: 100;
 	color: #880000;
@@ -98,8 +98,28 @@ p {
 	font-weight: 900;
 	color: #dd3333;
 }
+#tri1 {
+	width: 0;
+	height: 0;
+	border-right: 11px solid transparent;
+	border-bottom: 20px solid black;
+	position: absolute;
+	left: 168px;
+	top: 43px;
+	border-bottom-color: #ffffff;
+}
+#tri2 {
+	width: 0;
+	height: 0;
+	border-left: 11px solid transparent;
+	border-top: 20px solid black;
+	position: absolute;
+	left: 236px;
+	top: 21px;
+	border-top-color: #ffffff;
+}
 #sublogo {
-	margin-top: -10px;
+	margin-top: -16px;
 	margin-left: 5px;
 	float: left;
 }
@@ -260,8 +280,8 @@ only screen and (                min-resolution: 2dppx)  and (min-width: 700px) 
 <div id="main">
 <div id="top">
     <div class="left">
-    <div id="logo">insta<span class="emphasis">no.js</span></div>
-    <div id="sublogo"><noscript>Instant NoScript Detection</noscript></div>
+    <div id="logo">INSTA<span class="emphasis">NO.JS</span><div id="tri1"></div><div id="tri2"></div></div>
+    <div id="sublogo"><noscript>Instant NoScript Detection sdfsd</noscript></div>
     </div>
     <div class="right">
     <div id="descriptions">instano.js allows you to instantly detect if JavaScript is disabled after the page is loaded. It modifies the standard <code>&lt;noscript&gt;</code> tags so that the messages inside can be shown immediately whenever JavaScript is disabled.</div>
