@@ -27,7 +27,7 @@ var instano = (function (el) {
 		}
 	  }
 	}
-	
+	console.log(animation);
 	if (animation) {
 		// Create the CSS animation class
 		var css = 
