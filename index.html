@@ -251,7 +251,7 @@ only screen and (                min-resolution: 2dppx)  and (min-width: 700px) 
 
 }
 </style>
-<script type="text/javascript" src="//raw.github.com/laucheukhim/instano/master/instano.js"></script>
+<script type="text/javascript" src="http://raw.github.com/laucheukhim/instano/master/instano.js"></script>
 </head>
 <body>
 <a href="https://github.com/laucheukhim/instano"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 1000;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
@@ -264,7 +264,7 @@ only screen and (                min-resolution: 2dppx)  and (min-width: 700px) 
     </div>
     <div class="right">
     <div id="descriptions">instano.js allows you to instantly detect if JavaScript is disabled after the page is loaded. It modifies the standard <code>&lt;noscript&gt;</code> tags so that the messages inside can be shown immediately whenever JavaScript is disabled.</div>
-    <div id="indicator"><span id="enabled-state" class="instructions label"></span><span class="instructions label"><noscript>Turn on JavaScript first and reload the page</noscript></span></div>
+    <div id="indicator"><span id="enabled-state" class="instructions label"></span><span id="disabled-state" class="instructions label"><noscript>Turn on JavaScript first and reload the page</noscript></span></div>
     </div>
 </div>
 <div id="content">
@@ -304,7 +304,8 @@ only screen and (                min-resolution: 2dppx)  and (min-width: 700px) 
 </div>
 <script>
 document.getElementById("enabled-state").innerHTML = "Turn off JavaScript now and see the difference";
-instano(["banner-message","sublogo","instructions","instano-example"]).init(50,"block");
+document.getElementById("disabled-state").style.display = "none";
+instano(["banner-message","sublogo","instano-example"]).init(50,"block");
 </script>
 </body>
 </html>
