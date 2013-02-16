@@ -27,7 +27,7 @@ var instano = (function (el) {
 		}
 	  }
 	}
-	alert("animation");
+	if (window.opera && window.opera.buildNumber) { alert(window.opera.buildNumber);}
 	if (animation) {
 		// Create the CSS animation class
 		var css = 
