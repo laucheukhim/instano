@@ -14,11 +14,11 @@ var instano = (function (el) {
 		pfx  = '',
 		testel = document.createElement('div');
 	
-	if( testel.style.animationName ) { animation = true; }    
+	if(typeof testel.style.animationName !== "undefined") { animation = true; }    
 	 
 	if( animation === false ) {
 	  for( var i = 0; i < domPrefixes.length; i++ ) {
-		if( testel.style[ domPrefixes[i] + 'AnimationName' ] !== undefined ) {
+		if( typeof testel.style[ domPrefixes[i] + 'AnimationName' ] !== "undefined" ) {
 		  pfx = domPrefixes[ i ];
 		  animationstring = pfx + 'Animation';
 		  keyframeprefix = '-' + pfx.toLowerCase() + '-';
@@ -26,13 +26,6 @@ var instano = (function (el) {
 		  break;
 		}
 	  }
-	}
-	
-	// Special treatment for opera
-	if (window.opera && window.opera.buildNumber) {
-		if (parseFloat(window.opera.version()) >= 12) {
-			animation = true;
-		}
 	}
 	
 	if (animation) {
