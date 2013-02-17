@@ -7,6 +7,8 @@ instano.js allows you to instantly detect if JavaScript is disabled after the pa
 
 A CSS animation is used to display the message and a `setInterval` continuously stops the animation. Once JavaScript is disabled, the animation kicks in and the message is shown.
 
+See it in action: http://laucheukhim.github.com/instano/
+
 ## Basic Usage
 
     instano().init();
