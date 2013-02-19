@@ -120,10 +120,8 @@ var instano = (function (el) {
 		}
 	}
 	
-	var initialized = false;
-	
 	var func = function (el) {
-		if (!initialized) { var selectAll = (arguments.length === 0) ? true : false; }
+		var selectAll = (arguments.length === 0) ? true : false;
 		// Check if it is a DOM element
 		function isElement(o){
 			return (
@@ -135,8 +133,7 @@ var instano = (function (el) {
 			init: function(interval, displayStyle) {
 				interval = Math.round(typeof interval === "number" ? (interval >= 0 && interval <= 200 ?interval : 100) : 100);
 				displayStyle = displayStyle === "block" || displayStyle === "inline-block" ? displayStyle : "inline-block";
-				if (!initialized && animation) {
-					initialized = true;
+				if (animation) {
 					if (selectAll) {
 						// Find all the noscript tags
 						var nos = document.getElementsByTagName("noscript");
@@ -190,12 +187,15 @@ var instano = (function (el) {
 						}, interval);
 					}
 				}
+				return this;
 			},
 			disabled: function(callback) {
 				disabledCallback = callback;
+				return this;
 			},
 			reenabled: function(callback) {
 				reenabledCallback = callback;
+				return this;
 			}
 		};
 	}
