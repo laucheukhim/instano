@@ -164,7 +164,18 @@ p {
 	line-height: 24px;
 }
 .browser-compatibility {
+	display: table;
 	margin-bottom: 10px;
+}
+.browser-compatibility .row {
+	display: table-row;
+}
+.browser-compatibility .cell {
+	display: table-cell;
+	min-width: 100px;
+	padding-left: 5px;
+	padding-right: 5px;
+	text-align: center;
 }
 .browser-version {
 	height: 30px;
@@ -322,21 +333,32 @@ only screen and (                min-resolution: 2dppx)  and (min-width: 700px) 
     <div class="title">DOWNLOAD</div>
     <p>instano.js is currently in Pre-Alpha stage. Download the source code on <a href="https://github.com/laucheukhim/instano">GitHub</a> (development use only).</p>
     <div class="title">COMPATIBILITY</div>
-    <p>instano.js uses plain JavaScript and <code>@keyframes</code> CSS animation to disaplay instant messages. There is a fallback to standard <code>&lt;noscript&gt;</code> tags for non-supported browsers.</p>
+    <p>instano.js uses plain JavaScript and <code>@keyframes</code> CSS animation to disaplay instant messages. There is a fallback to standard <code>&lt;noscript&gt;</code> tags for non-supported browsers. The callback functions require the use of <code>requestAnimationFrame</code> and is supported by a limited number of mordern browsers.</p>
     <div class="browser-compatibility">
-    	<div class="chrome"></div><div class="browser-version">(Yes)</div>
-        <div class="firefox"></div><div class="browser-version">5.0+</div>
-        <div class="opera"></div><div class="browser-version">12+</div>
-        <div class="safari"></div><div class="browser-version">4.0+</div>
-        <div class="ie"></div><div class="browser-version">10+(not tested)</div>
-    </div>
-    <p>The callback functions require the use of <code>requestAnimationFrame</code> and is supported by a limited number of mordern browsers.</p>
-    <div class="browser-compatibility">
-    	<div class="chrome"></div><div class="browser-version">21.0+</div>
-        <div class="firefox"></div><div class="browser-version">14.0+</div>
-        <div class="opera"></div><div class="browser-version">Not supported</div>
-        <div class="safari"></div><div class="browser-version">6.0+</div>
-        <div class="ie"></div><div class="browser-version">10+(not tested)</div>
+    	<div class="row">
+        	<div class="cell"></div>
+        	<div class="cell"><div class="chrome"></div></div>
+            <div class="cell"><div class="firefox"></div></div>
+            <div class="cell"><div class="opera"></div></div>
+            <div class="cell"><div class="safari"></div></div>
+            <div class="cell"><div class="ie"></div></div>
+        </div>
+        <div class="row">
+        	<div class="cell">Instant Message</div>
+            <div class="cell">(Yes)</div>
+            <div class="cell">5.0+</div>
+            <div class="cell">12+</div>
+            <div class="cell">4.0+</div>
+            <div class="cell">10+(not tested)</div>
+        </div>
+        <div class="row">
+        	<div class="cell">Callback Function</div>
+            <div class="cell">21.0+</div>
+            <div class="cell">14.0+</div>
+            <div class="cell">Not supported</div>
+            <div class="cell">6.0+</div>
+            <div class="cell">10+(not tested)</div>
+        </div>
     </div>
     <div class="title">ORIGIN</div>
     <p>This code started as an answer to the Stack Overflow question <a href="http://stackoverflow.com/a/14764039/1493698" target="_blank">"How can a site instantly detect that javascript has been disabled?"</a></p>
@@ -376,7 +398,7 @@ document.write("<sc"+"ript type='text/javascript' src='" +
 scJsHost+
 "statcounter.com/counter/counter.js'></"+"script>");
 </script>
-<noscript><div class="statcounter"><a title="web analytics"
+<noscript><div class="statcounter" style="display:none;"><a title="web analytics"
 href="http://statcounter.com/" target="_blank"><img
 class="statcounter"
 src="http://c.statcounter.com/8715674/0/215f0635/1/"
