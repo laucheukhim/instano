@@ -322,10 +322,10 @@ only screen and (                min-resolution: 2dppx)  and (min-width: 700px) 
 &lt;script&gt;
     instano().init()
     .disabled(function() {
-        alert("You have disabled JavaScript. I am a callback function in response to this.");
+        alert("A callback function is triggered when you disable JavaScript.");
     })
     .reenabled(function() {
-        alert("Thank you for reenabling JavaScript. You make the web a better place.");
+        alert("Another callback function is triggered when you reenable JavaScript.");
     });
 &lt;/script&gt;</pre></div>
         </div>
@@ -369,10 +369,10 @@ document.getElementById("enabled-state").innerHTML = "Turn off JavaScript now an
 document.getElementById("disabled-state").style.display = "none";
 instano(["banner-message","sublogo","instano-example"]).init(16,"block")
 .disabled(function() {
-	alert("You have disabled JavaScript. I am a callback function in response to this.");
+	alert("A callback function is triggered when you disable JavaScript.");
 })
 .reenabled(function() {
-	alert("Thank you for reenabling JavaScript. You make the web a better place.");
+	alert("Another callback function is triggered when you reenable JavaScript.");
 });
 </script>
 <script type="text/javascript">
