@@ -320,11 +320,11 @@ only screen and (                min-resolution: 2dppx)  and (min-width: 700px) 
             <div><pre>&lt;noscript&gt;You can see this message as soon as JavaScript is disabled.&lt;/noscript&gt;
 &lt;script src="instano.js"&gt;&lt;/script&gt;
 &lt;script&gt;
-    instano().init();
-    instano().disabled(function() {
+    instano().init()
+    disabled(function() {
         alert("You have disabled JavaScript. I am a callback function in response to this.");
-    });
-    instano().reenabled(function() {
+    })
+    reenabled(function() {
         alert("Thank you for reenabling JavaScript. You make the web a better place.");
     });
 &lt;/script&gt;</pre></div>
@@ -367,11 +367,11 @@ only screen and (                min-resolution: 2dppx)  and (min-width: 700px) 
 <script>
 document.getElementById("enabled-state").innerHTML = "Turn off JavaScript now and see the difference";
 document.getElementById("disabled-state").style.display = "none";
-instano(["banner-message","sublogo","instano-example"]).init(16,"block");
-instano().disabled(function() {
+instano(["banner-message","sublogo","instano-example"]).init(16,"block")
+.disabled(function() {
 	alert("You have disabled JavaScript. I am a callback function in response to this.");
-});
-instano().reenabled(function() {
+})
+.reenabled(function() {
 	alert("Thank you for reenabling JavaScript. You make the web a better place.");
 });
 </script>
