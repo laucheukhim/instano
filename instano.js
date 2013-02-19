@@ -1,7 +1,7 @@
 /*
  * Instano.js - Instant NoScript Detection
  *
- * @author: Antony Lau (laucheukhim@gmail.com)
+ * @author: Antony Lau (instano.js@gmail.com)
  */
 
 var instano = (function (el) {
