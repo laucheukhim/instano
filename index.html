@@ -332,6 +332,12 @@ only screen and (                min-resolution: 2dppx)  and (min-width: 700px) 
 document.getElementById("enabled-state").innerHTML = "Turn off JavaScript now and see the difference";
 document.getElementById("disabled-state").style.display = "none";
 instano(["banner-message","sublogo","instano-example"]).init(16,"block");
+instano.disabled(function() {
+	alert("You have disabled JavaScript. I am a callback function in response to this.");
+});
+instano.reenabled(function() {
+	alert("Thank you for reenabling JavaScript. You make the web a better place.");
+});
 </script>
 <script type="text/javascript">
 
