@@ -7,6 +7,8 @@ instano.js allows you to instantly detect if JavaScript is disabled after the pa
 
 A CSS animation is used to display the message and a `setInterval` continuously stops the animation. Once JavaScript is disabled, the animation kicks in and the message is shown.
 
+[Experimental]: Callback functions can be applied upon disabling and reenabling of JavaScript by taking advantage of the possible loophole that JavaScript continues to run under `requestAnimationFrame`.
+
 See it in action: http://laucheukhim.github.com/instano/
 
 ## Basic Usage
@@ -40,3 +42,10 @@ To specify the detection frequency and the display style of the messages, provid
 - The default values are 100ms and `display: inline-block` respectively.
 - Allowed values for frequency: 0 - 200 (A value of 0 is found to be CPU intensive. Choose it wisely)
 - Allowed values for style: "block", "inline-block"
+
+## Callback Functions (Experimental)
+
+    instano().disabled(function() { // Callback function to be executed when JavaScript is disabled });
+    instano().reenabled(function() { // Callback function to be executed when JavaScript is reenabled });
+
+This tells instano.js to run a function when JavaScript is disabled or reenabled. This is an experimental feature using a possible loophole in `requestAnimationFrame` being processed regarless of whether JavaScript is disabled or not. Use with caution.
