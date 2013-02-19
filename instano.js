@@ -34,7 +34,7 @@ var instano = (function (el) {
 	  }
 	}
 	
-	/* Detect if JavaScript is reenabled (does not work on Opera)
+	/* Detect if JavaScript is reenabled (not supported by Opera)
 	***************************************************************************/
 	// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
 	// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
@@ -67,14 +67,14 @@ var instano = (function (el) {
 			};
 	}());
 	
-	var continuousTime = new Date().getTime(), javascriptTime = new Date().getTime(), reportStatus = true, disabledDuration = [], disabledCallback, reenabledCallback;
+	var continuousTime = new Date().getTime(), javascriptTime = new Date().getTime(), reportStatus = true, disabledDuration = 0, disabledCallback, reenabledCallback;
 	
 	function step(timestamp) {
 		continuousTime = new Date().getTime();
 		if (reportStatus) {
 			if ((continuousTime - javascriptTime) >= 500) {
-				disabledDuration.push(1);
-				if (disabledDuration.length > 10) {
+				disabledDuration++;
+				if (disabledDuration > 10) {
 					// JavaScript is disabled
 					if (typeof disabledCallback === "function") {
 						disabledCallback();
@@ -88,7 +88,7 @@ var instano = (function (el) {
 				if (typeof reenabledCallback === "function") {
 					reenabledCallback();
 				}
-				disabledDuration = [];
+				disabledDuration = 0;
 				reportStatus = true;
 			}
 		}
