@@ -45,7 +45,8 @@ To specify the detection frequency and the display style of the messages, provid
 
 ## Callback Functions (Experimental)
 
-    instano().disabled(function() { // Callback function to be executed when JavaScript is disabled });
-    instano().reenabled(function() { // Callback function to be executed when JavaScript is reenabled });
+    instano()
+    .disabled(function() { }, <setTimeout or setInterval>, <duration>) // The last two parameters are optional
+    .reenabled(function() { });
 
 This tells instano.js to run a function when JavaScript is disabled or reenabled. This is an experimental feature using a possible loophole in `requestAnimationFrame` being processed regarless of whether JavaScript is disabled or not. Use with caution.
