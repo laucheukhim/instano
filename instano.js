@@ -6,7 +6,13 @@
 
 var instano = (function (el) {
 	
-	// Testing for CSS animation support
+	/* Testing for CSS animation support 
+	***************************************************************************/
+	// https://developer.mozilla.org/en-US/docs/CSS/Tutorials/Using_CSS_animations/Detecting_CSS_animation_support
+	
+	// Detecting CSS animation support - CSS | MDN
+	// fixes from Antony Lau
+	
 	var animation = false,
 		animationstring = 'animation',
 		keyframeprefix = '',
@@ -28,8 +34,75 @@ var instano = (function (el) {
 	  }
 	}
 	
+	/* Detect if JavaScript is reenabled (does not work on Opera)
+	***************************************************************************/
+	// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+	// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
+	 
+	// requestAnimationFrame polyfill by Erik Möller
+	// fixes from Paul Irish and Tino Zijdel
+	 
+	(function() {
+		var lastTime = 0;
+		var vendors = ['ms', 'moz', 'webkit', 'o'];
+		for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+			window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+			window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] 
+									   || window[vendors[x]+'CancelRequestAnimationFrame'];
+		}
+	 
+		if (!window.requestAnimationFrame)
+			window.requestAnimationFrame = function(callback, element) {
+				var currTime = new Date().getTime();
+				var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+				var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
+				  timeToCall);
+				lastTime = currTime + timeToCall;
+				return id;
+			};
+	 
+		if (!window.cancelAnimationFrame)
+			window.cancelAnimationFrame = function(id) {
+				clearTimeout(id);
+			};
+	}());
+	
+	var continuousTime = new Date().getTime(), javascriptTime = new Date().getTime(), reportStatus = true, disabledDuration = [], disabledCallback, reenabledCallback;
+	
+	function step(timestamp) {
+		continuousTime = new Date().getTime();
+		if (reportStatus) {
+			if ((continuousTime - javascriptTime) >= 500) {
+				disabledDuration.push(1);
+				if (disabledDuration.length > 10) {
+					// JavaScript is disabled
+					if (typeof disabledCallback === "function") {
+						disabledCallback();
+					}
+					reportStatus = false;
+				}
+			}
+		} else {
+			if ((continuousTime - javascriptTime) < 500) {
+				// JavaScript is reenabled
+				if (typeof reenabledCallback === "function") {
+					reenabledCallback();
+				}
+				disabledDuration = [];
+				reportStatus = true;
+			}
+		}
+		requestAnimationFrame(step);
+	}
+	requestAnimationFrame(step);
+	
+	setInterval(function() {
+		javascriptTime = new Date().getTime();
+	}, 16)
+	
+	/* Create the CSS animation class
+	***************************************************************************/
 	if (animation) {
-		// Create the CSS animation class
 		var css = 
 		'.nojs_init { position:relative; display:inline-block; vertical-align:top; animation:nojs-animation 0.2s step-end; -moz-animation:nojs-animation 0.2s step-end; -webkit-animation:nojs-animation 0.2s step-end;  -o-animation:nojs-animation 0.2s step-end; } ' + 
 		'@keyframes nojs-animation { from {width:0px;height:0px;visibility:hidden;opacity:0;} to {width:1px;height:1px;visibility:visible;opacity:1;} } ' + 
@@ -114,6 +187,12 @@ var instano = (function (el) {
 						}, interval);
 					}
 				}
+			},
+			disabled: function(callback) {
+				disabledCallback = callback;
+			},
+			reenabled: function(callback) {
+				reenabledCallback = callback;
 			}
 		};
 	}
