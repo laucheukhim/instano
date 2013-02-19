@@ -163,7 +163,7 @@ p {
 	float: right;
 	line-height: 24px;
 }
-#browser-compatibility {
+.browser-compatibility {
 	margin-bottom: 10px;
 }
 .browser-version {
@@ -286,7 +286,7 @@ only screen and (                min-resolution: 2dppx)  and (min-width: 700px) 
     <div id="sublogo"><noscript>Instant NoScript Detection</noscript></div>
     </div>
     <div class="right">
-    <div id="descriptions">instano.js allows you to instantly detect if JavaScript is disabled after the page is loaded. It modifies the standard <code>&lt;noscript&gt;</code> tags so that the messages inside can be shown immediately whenever JavaScript is disabled.</div>
+    <div id="descriptions">instano.js allows you to instantly detect if JavaScript is disabled after the page is loaded. It modifies the standard <code>&lt;noscript&gt;</code> tags so that the messages inside can be shown immediately whenever JavaScript is disabled. You can also apply callback functions when JavaScript is disabled and reenabled.</div>
     <div id="indicator"><span id="enabled-state" class="instructions label"></span><span id="disabled-state" class="instructions label"><noscript>Turn on JavaScript first and reload the page</noscript></span></div>
     </div>
 </div>
@@ -310,18 +310,32 @@ only screen and (                min-resolution: 2dppx)  and (min-width: 700px) 
 &lt;script src="instano.js"&gt;&lt;/script&gt;
 &lt;script&gt;
     instano().init();
+    instano().disabled(function() {
+        alert("You have disabled JavaScript. I am a callback function in response to this.");
+    });
+    instano().reenabled(function() {
+        alert("Thank you for reenabling JavaScript. You make the web a better place.");
+    });
 &lt;/script&gt;</pre></div>
         </div>
     </div>
     <div class="title">DOWNLOAD</div>
     <p>instano.js is currently in Pre-Alpha stage. Download the source code on <a href="https://github.com/laucheukhim/instano">GitHub</a> (development use only).</p>
     <div class="title">COMPATIBILITY</div>
-    <p>instano.js uses plain JavaScript and <code>@keyframes</code> CSS animation. There is a fallback to standard <code>&lt;noscript&gt;</code> tags for non-supported browsers.</p>
-    <div id="browser-compatibility">
+    <p>instano.js uses plain JavaScript and <code>@keyframes</code> CSS animation to disaplay instant messages. There is a fallback to standard <code>&lt;noscript&gt;</code> tags for non-supported browsers.</p>
+    <div class="browser-compatibility">
     	<div class="chrome"></div><div class="browser-version">(Yes)</div>
         <div class="firefox"></div><div class="browser-version">5.0+</div>
         <div class="opera"></div><div class="browser-version">12+</div>
         <div class="safari"></div><div class="browser-version">4.0+</div>
+        <div class="ie"></div><div class="browser-version">10+(not tested)</div>
+    </div>
+    <p>The callback functions require the use of <code>requestAnimationFrame</code> and is supported by a limited number of mordern browsers.</p>
+    <div class="browser-compatibility">
+    	<div class="chrome"></div><div class="browser-version">21.0+</div>
+        <div class="firefox"></div><div class="browser-version">14.0+</div>
+        <div class="opera"></div><div class="browser-version">Not supported</div>
+        <div class="safari"></div><div class="browser-version">6.0+</div>
         <div class="ie"></div><div class="browser-version">10+(not tested)</div>
     </div>
     <div class="title">ORIGIN</div>
