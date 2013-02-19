@@ -67,7 +67,7 @@ var instano = (function (el) {
 			};
 	}());
 	
-	var continuousTime = new Date().getTime(), javascriptTime = new Date().getTime(), reportStatus = true, disabledDuration = 0, disabledCallback, reenabledCallback;
+	var continuousTime = new Date().getTime(), javascriptTime = new Date().getTime(), reportStatus = true, disabledDuration = 0, disabledCallback, disabledCallbackDelay,  disabledCallbackDuration, reenabledCallback, executeTimeout = false, executeInterval = false, executeTime;
 	
 	function step(timestamp) {
 		continuousTime = new Date().getTime();
@@ -77,7 +77,13 @@ var instano = (function (el) {
 				if (disabledDuration > 10) {
 					// JavaScript is disabled
 					if (typeof disabledCallback === "function") {
-						disabledCallback();
+						if (disabledCallbackDelay !== false && disabledCallbackDuration !== false) {
+							if (disabledCallbackDelay === "setTimeout") executeTimeout = true;
+							if (disabledCallbackDelay === "setInterval") executeInterval = true;
+							executeTime = continuousTime + disabledCallbackDuration;
+						} else {
+							disabledCallback();
+						}
 					}
 					reportStatus = false;
 				}
@@ -89,7 +95,21 @@ var instano = (function (el) {
 					reenabledCallback();
 				}
 				disabledDuration = 0;
+				executeTimeout = false;
+				executeInterval = false;
 				reportStatus = true;
+			}
+		}
+		if (executeTimeout) {
+			if (continuousTime >= executeTime) {
+				disabledCallback();
+				executeTimeout = false;
+			}
+		}
+		if (executeInterval) {
+			if (continuousTime >= executeTime) {
+				disabledCallback();
+				executeTime = continuousTime + disabledCallbackDuration;
 			}
 		}
 		requestAnimationFrame(step);
@@ -189,8 +209,10 @@ var instano = (function (el) {
 				}
 				return this;
 			},
-			disabled: function(callback) {
+			disabled: function(callback, delay, duration) {
 				disabledCallback = callback;
+				disabledCallbackDelay = delay === "setTimeout" || delay === "setInterval" ? delay : false;
+				disabledCallbackDuration = typeof duration === "number" && duration >= 0 ? Math.round(duration) : false;
 				return this;
 			},
 			reenabled: function(callback) {
