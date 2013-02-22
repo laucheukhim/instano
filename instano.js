@@ -9,10 +9,6 @@ var instano = (function (el) {
 	
 	/* Testing for CSS animation support 
 	***************************************************************************/
-	// https://developer.mozilla.org/en-US/docs/CSS/Tutorials/Using_CSS_animations/Detecting_CSS_animation_support
-	
-	// Detecting CSS animation support - CSS | MDN
-	// fixes from Antony Lau
 	
 	var animation = false,
 		animationstring = 'animation',
@@ -37,11 +33,6 @@ var instano = (function (el) {
 	
 	/* Detect if JavaScript is reenabled (not supported by Opera)
 	***************************************************************************/
-	// http://paulirish.com/2011/requestanimationframe-for-smart-animating/
-	// http://my.opera.com/emoller/blog/2011/12/20/requestanimationframe-for-smart-er-animating
-	 
-	// requestAnimationFrame polyfill by Erik Möller
-	// fixes from Paul Irish and Tino Zijdel
 	 
 	(function() {
 		var lastTime = 0;
