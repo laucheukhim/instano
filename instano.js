@@ -1,7 +1,8 @@
 /*
- * Instano.js - Instant NoScript Detection
+ * instano.js - Instant NoScript Detection
  *
- * @author: Antony Lau (instano.js@gmail.com)
+ * author: Antony Lau (instano.js@gmail.com)
+ * license : MIT
  */
 
 var instano = (function (el) {
