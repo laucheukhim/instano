@@ -3,7 +3,7 @@ instano
 
 instano.js - Instant NoScript Detection
 
-> instano.js is in Pre-Alpha stage. Development use only. Production use is discouraged at this stage.
+> instano.js is in Pre-Alpha stage. Development use only. Production use is not recommended at this stage.
 
 instano.js allows you to instantly detect if JavaScript is disabled after the page is loaded. It modifies the standard `<noscript>` tags so that the messages inside can be shown immediately whenever JavaScript is disabled.
 
