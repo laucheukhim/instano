@@ -3,6 +3,8 @@ instano
 
 instano.js - Instant NoScript Detection
 
+> instano.js is in Pre-Alpha stage. Development use only. Production use is discouraged at this stage.
+
 instano.js allows you to instantly detect if JavaScript is disabled after the page is loaded. It modifies the standard `<noscript>` tags so that the messages inside can be shown immediately whenever JavaScript is disabled.
 
 A CSS animation is used to display the message and a `setInterval` continuously stops the animation. Once JavaScript is disabled, the animation kicks in and the message is shown.
