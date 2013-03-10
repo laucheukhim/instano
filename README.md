@@ -15,7 +15,7 @@ See it in action: http://laucheukhim.github.com/instano/
 
 ## Basic Usage
 
-    instano().init();
+    instano();
     
 This tells instano.js to search for all the `<noscript>` tags on a page and convert them to instant noscript messages.
 
@@ -23,32 +23,49 @@ This tells instano.js to search for all the `<noscript>` tags on a page and conv
 
 To specify the elements for processing, pass the element (or its id) or an array of elements (or their ids) as the parameter of `instano()`. 
     
-    instano(<element>).init();
-    instano(<array of elements>).init();
+    instano({
+    	indicator:<element>
+    	});
+
+	instano({
+    	indicator:<array of elements>
+    	});
+
+
 
 Make sure the elements contain at least one pair of `<noscript>` tags so that the message shows correctly when the page is first loaded with JavaScript disabled.
 
     <div id="nojs1"><noscript>First message</noscript></div>
     <div id="nojs2"><noscript>Second message</noscript></div>
 
-- `instano(document.getElementById("nojs1")).init();` applies only to the first message.
-- `instano(["nojs1","nojs2"]).init();` applies to both of the messages.
+- `instano({
+    	indicator:document.getElementById("nojs1")
+    });` applies only to the first message.
+- `instano({
+    	indicator:["nojs1","nojs2"]
+    });` applies to both of the messages.
 
 ### Modify frequency and style
 
 To specify the detection frequency and the display style of the messages, provide the following parameters for `init()`:
 
-    instano().init(<frequency>, <style>);
+    instano({
+		interval:<detect each X miliseconds>,
+		displayStyle:<style>
+    	});
 
-- `instano().init(50, "block");` converts all the `<noscript>` tags into instant noscript messages with a detection frequency of 50ms and a CSS style of `display: block`.
+- `instano({
+		interval:50,
+		displayStyle:"block"
+    	});` converts all the `<noscript>` tags into instant noscript messages with a detection frequency of 50ms and a CSS style of `display: block`.
 - The default values are 100ms and `display: inline-block` respectively.
-- Allowed values for frequency: 0 - 200 (A value of 0 is found to be CPU intensive. Choose it wisely)
+- Allowed values for interval: numbers above 0 (small values are CPU intensive. Choose it wisely)
 - Allowed values for style: "block", "inline-block"
 
-## Callback Functions (Experimental)
+## Callback Function 
 
-    instano()
-    .disabled(function() { }, <setTimeout or setInterval>, <duration>) // The last two parameters are optional
-    .reenabled(function() { });
-
-This tells instano.js to run a function when JavaScript is disabled or reenabled. This is an experimental feature using a possible loophole in `requestAnimationFrame` being processed regarless of whether JavaScript is disabled or not. Use with caution.
+    instano({
+    	reenabledCallback:function(){}
+    	})
+    
+This tells instano.js to run a function when JavaScript is reenabled. 

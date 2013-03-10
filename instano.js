@@ -5,111 +5,126 @@
  * license : MIT
  */
 
-var instano = (function (el,settings) {
-	
-	/* Testing for CSS animation support 
-	***************************************************************************/
-	
+ var instano = (function (settings) {
+ 	"use strict";
+
+ 	settings || (settings = {});
+
+    settings.interval || (settings.interval = 100); //testing for falsy adds benefit of not accepting 0 :)
+	(settings.displayStyle && settings.displayStyle === "block") || (settings.displayStyle = "inline-block");
+	settings.indicator || (settings.indicator = false);
+	//settings.reenabledCallback
+	//settings.disabledCallback
+	(settings.disabledCallbackDelay === "setTimeout" || settings.disabledCallbackDelay === "setInterval") || (settings.disabledCallbackDelay = false);
+	(typeof settings.disabledCallbackDuration === "number" && settings.disabledCallbackDuration >= 0) || (settings.disabledCallbackDuration = false);
+
+
+
+
+
+/* Testing for CSS animation support 
+***************************************************************************/
+
 	var isAnimationSupported = false,
-		domPrefixes = 'Webkit Moz O ms Khtml'.split(' '),
-		testel = document.createElement('div');
-	
+	domPrefixes = 'Webkit Moz O ms Khtml'.split(' '),
+	testel = document.createElement('div');
+
 	if(typeof testel.style.animationName !== "undefined") { isAnimationSupported = true; }    
-	 
+
 	if( isAnimationSupported === false ) {
-	  for( var i = 0; i < domPrefixes.length; i++ ) {
-		if( typeof testel.style[ domPrefixes[i] + 'AnimationName' ] !== "undefined" ) {
-		  isAnimationSupported = true;
-		  break;
+		for( var i = 0; i < domPrefixes.length; i++ ) {
+			if( typeof testel.style[ domPrefixes[i] + 'AnimationName' ] !== "undefined" ) {
+				isAnimationSupported = true;
+				break;
+			}
 		}
-	  }
 	}
-	
-	/* Detect if JavaScript is reenabled (not supported by Opera)
-	***************************************************************************/
-	 
+
+/* Detect if JavaScript is reenabled (not supported by Opera)
+***************************************************************************/
+
 	//requestAnimationFrame crossbrowser
-	reqFrame = (function() {
+	var reqFrame = (function() {
 		var lastTime = 0, 
-			vendors = ['ms', 'moz', 'webkit', 'o'],
-			reqFrame = window.requestAnimationFrame,
-			cancelFrame;
+		vendors = ['ms', 'moz', 'webkit', 'o'],
+		reqFrame = window.requestAnimationFrame;
 
 		for(var x = 0; x < vendors.length && !reqFrame; ++x) {
 			reqFrame = window[vendors[x]+'RequestAnimationFrame'];
 		}
-	 
-		if (!reqFrame)
+
+		if (!reqFrame){
 			reqFrame = function(callback, element) {
 				var currTime = new Date().getTime();
 				var timeToCall = Math.max(0, 16 - (currTime - lastTime));
 				var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
-				  timeToCall);
+					timeToCall);
 				lastTime = currTime + timeToCall;
 				return id;
 			};
-	 
+		}
+
 		return reqFrame;
 	})();
-	
+
 	var continuousTime = new Date().getTime(), javascriptTime = new Date().getTime(), reportStatus = true, 
-		disabledDuration = 0, disabledCallback, disabledCallbackDelay,  disabledCallbackDuration, 
-		reenabledCallback, executeTimeout = false, executeInterval = false, executeTime;
-	
+	disabledDuration = 0, executeTimeout = false, executeInterval = false, executeTime;
+
 	function step(timestamp) {
 		continuousTime = new Date().getTime();
 		if (reportStatus) {
 			if ((continuousTime - javascriptTime) >= 500) {
 				disabledDuration++;
 				if (disabledDuration > 10) {
-					// JavaScript is disabled
-					if (typeof disabledCallback === "function") {
-						if (disabledCallbackDelay !== false && disabledCallbackDuration !== false) {
-							if (disabledCallbackDelay === "setTimeout") executeTimeout = true;
-							if (disabledCallbackDelay === "setInterval") executeInterval = true;
-							executeTime = continuousTime + disabledCallbackDuration;
-						} else {
-							disabledCallback();
-						}
-					}
-					reportStatus = false;
-				}
-			}
-		} else {
-			if ((continuousTime - javascriptTime) < 500) {
-				// JavaScript is reenabled
-				if (typeof reenabledCallback === "function") {
-					reenabledCallback();
-				}
-				disabledDuration = 0;
-				executeTimeout = false;
-				executeInterval = false;
-				reportStatus = true;
-			}
-		}
-		if (executeTimeout) {
-			if (continuousTime >= executeTime) {
-				disabledCallback();
-				executeTimeout = false;
-			}
-		}
-		if (executeInterval) {
-			if (continuousTime >= executeTime) {
-				disabledCallback();
-				executeTime = continuousTime + disabledCallbackDuration;
-			}
-		}
-		reqFrame(step);
+	                // JavaScript is disabled
+	                if (typeof settings.disabledCallback === "function") {
+	                	if (settings.disabledCallbackDelay !== false && settings.disabledCallbackDuration !== false) {
+	                		if (settings.disabledCallbackDelay === "setTimeout") executeTimeout = true;
+	                		if (settings.disabledCallbackDelay === "setInterval") executeInterval = true;
+	                		executeTime = continuousTime + settings.disabledCallbackDuration;
+	                	} else {
+	                		settings.disabledCallback();
+	                	}
+	                }
+	                reportStatus = false;
+	            }
+	        }
+	    } else {
+	    	if ((continuousTime - javascriptTime) < 500) {
+	            // JavaScript is reenabled
+	            if (typeof settings.reenabledCallback === "function") {
+	            	settings.reenabledCallback();
+	            }
+	            disabledDuration = 0;
+	            executeTimeout = false;
+	            executeInterval = false;
+	            reportStatus = true;
+	        }
+	    }
+	    if (executeTimeout) {
+	    	if (continuousTime >= executeTime) {
+	    		settings.disabledCallback();
+	    		executeTimeout = false;
+	    	}
+	    }
+	    if (executeInterval) {
+	    	if (continuousTime >= executeTime) {
+	    		settings.disabledCallback();
+	    		executeTime = continuousTime + settings.disabledCallbackDuration;
+	    	}
+	    }
+	    reqFrame(step);
 	}
 	//initialize 
 	reqFrame(step);
-	
+
+	//[naugtur] and what do we need that for exactly?
 	setInterval(function() {
 		javascriptTime = new Date().getTime();
-	}, 16)
-	
-	/* Create the CSS animation class
-	***************************************************************************/
+	}, 16);
+
+/* Create the CSS animation class
+***************************************************************************/
 	if (isAnimationSupported) {
 		var css = 
 		'.nojs_init { position:relative; display:inline-block; vertical-align:top; animation:nojs-animation 0.2s step-end; -moz-animation:nojs-animation 0.2s step-end; -webkit-animation:nojs-animation 0.2s step-end;  -o-animation:nojs-animation 0.2s step-end; } ' + 
@@ -126,89 +141,76 @@ var instano = (function (el,settings) {
 			style.innerHTML = css;
 			document.getElementsByTagName('head')[0].appendChild(style);
 		}
+
+	    //start working immediately
+	    init(settings.indicator);
 	}
-	
-	var func = function (el) {
-		var selectAll = (arguments.length === 0) ? true : false;
-		// Check if it is a DOM element
-		function isElement(o){
-			return (
-				typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
-				o && typeof o === "object" && o.nodeType === 1 && typeof o.nodeName==="string"
-			);
-		}
-		return {
-			init: function(interval, displayStyle) {
-				interval = Math.round(typeof interval === "number" ? (interval >= 0 && interval <= 200 ?interval : 100) : 100);
-				displayStyle = displayStyle === "block" || displayStyle === "inline-block" ? displayStyle : "inline-block";
-				if (isAnimationSupported) {
-					if (selectAll) {
-						// Find all the noscript tags
-						var nos = document.getElementsByTagName("noscript");
-					} else if (Object.prototype.toString.call(el) === "[object Array]") {
-						var nos = [];
-						for (var i = 0; i < el.length; i++) {
-							if (isElement(el[i])) {
-								var nosj = el[i].getElementsByTagName("noscript");
-								for (var j in nosj) {
-									if (isElement(nosj[j])) nos.push(nosj[j]);
-								}
-							} else if (document.getElementById(el[i])) {
-								var nosj = document.getElementById(el[i]).getElementsByTagName("noscript");
-								for (var j in nosj) {
-									if (isElement(nosj[j])) nos.push(nosj[j]);
-								}
-							}
-						}
-					} else if (isElement(el)) {
-						// Find the noscript tags within an element
-						var nos = el.getElementsByTagName("noscript");
-					} else if (document.getElementById(el)) {
-						var nos = document.getElementById(el).getElementsByTagName("noscript");
-					}
-					var elreplace = {};
-					if (nos) {
-						for (var i = 0; i < nos.length; i++) {
-							var newone = document.createElement('div');
-							newone.id = "jsdetect_" + i;
-							newone.className = "nojs_init";
-							newone.style.display = displayStyle;
-							newone.innerHTML = nos[i].textContent;
-							elreplace[i] = {
-								parent: nos[i].parentNode,
-								newel: newone,
-								original: nos[i]
-							};
-						}
-						for (var i in elreplace) {
-							// Replace noscript with span
-							elreplace[i].parent.replaceChild(elreplace[i].newel, elreplace[i].original);
-						}
-						// Continuously replace element to stop animation
-						// WARNING: An interval of 0 is found to be CPU intensive. Choose it wisely.
-						setInterval(function() {
-							for (var i in elreplace) {
-								var el = document.getElementById(elreplace[i].newel.id);
-								var newone = el.cloneNode(true);
-								el.parentNode.replaceChild(newone, el);
-							}
-						}, interval);
-					}
-				}
-				return this;
-			},
-			disabled: function(callback, delay, duration) {
-				disabledCallback = callback;
-				disabledCallbackDelay = delay === "setTimeout" || delay === "setInterval" ? delay : false;
-				disabledCallbackDuration = typeof duration === "number" && duration >= 0 ? Math.round(duration) : false;
-				return this;
-			},
-			reenabled: function(callback) {
-				reenabledCallback = callback;
-				return this;
-			}
-		};
+
+
+	// Check if object o is a DOM element
+	function isElement(o){
+		return (
+	            typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
+	            o && typeof o === "object" && o.nodeType === 1 && typeof o.nodeName==="string"
+	            );
 	}
-	
-	return func;
-})();
+
+	//inits
+	function init(el){
+		if (!el) {
+	        // Find all the noscript tags
+	        var nos = document.getElementsByTagName("noscript");
+	    } else if (Object.prototype.toString.call(el) === "[object Array]") {
+	    	var nos = [];
+	    	for (var i = 0; i < el.length; i++) {
+	    		if (isElement(el[i])) {
+	    			var nosj = el[i].getElementsByTagName("noscript");
+	    			for (var j in nosj) {
+	    				if (isElement(nosj[j])) nos.push(nosj[j]);
+	    			}
+	    		} else if (document.getElementById(el[i])) {
+	    			var nosj = document.getElementById(el[i]).getElementsByTagName("noscript");
+	    			for (var j in nosj) {
+	    				if (isElement(nosj[j])) nos.push(nosj[j]);
+	    			}
+	    		}
+	    	}
+	    } else if (isElement(el)) {
+	        // Find the noscript tags within an element
+	        var nos = el.getElementsByTagName("noscript");
+	    } else if (document.getElementById(el)) {
+	    	var nos = document.getElementById(el).getElementsByTagName("noscript");
+	    }
+	    var elreplace = {};
+	    if (nos) {
+	    	for (var i = 0; i < nos.length; i++) {
+	    		var newone = document.createElement('div');
+	    		newone.id = "jsdetect_" + i;
+	    		newone.className = "nojs_init";
+	    		newone.style.display = settings.displayStyle;
+	    		newone.innerHTML = nos[i].textContent;
+	    		elreplace[i] = {
+	    			parent: nos[i].parentNode,
+	    			newel: newone,
+	    			original: nos[i]
+	    		};
+	    	}
+	    	for (var i in elreplace) {
+	            // Replace noscript with span
+	            elreplace[i].parent.replaceChild(elreplace[i].newel, elreplace[i].original);
+	        }
+	        // Continuously replace element to stop animation
+	        // WARNING: An interval of 0 is found to be CPU intensive. Choose it wisely.
+	        setInterval(function() {
+	        	for (var i in elreplace) {
+	        		var el = document.getElementById(elreplace[i].newel.id);
+	        		var newone = el.cloneNode(true);
+	        		el.parentNode.replaceChild(newone, el);
+	        	}
+	        }, settings.interval);
+	    }
+
+	}
+	//init-end
+
+});
