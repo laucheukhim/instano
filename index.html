@@ -306,7 +306,7 @@ only screen and (                min-resolution: 2dppx)  and (min-width: 700px) 
     <div id="sublogo"><noscript>Instant NoScript Detection</noscript></div>
     </div>
     <div class="right">
-    <div id="descriptions">instano.js allows you to instantly detect if JavaScript is disabled after the page is loaded. It modifies the standard <code>&lt;noscript&gt;</code> tags so that the messages inside can be shown immediately whenever JavaScript is disabled. You can also apply callback functions when JavaScript is disabled and reenabled.</div>
+    <div id="descriptions">instano.js allows you to instantly detect if JavaScript is disabled after the page is loaded. It modifies the standard <code>&lt;noscript&gt;</code> tags so that the messages inside can be shown immediately whenever JavaScript is disabled. You can also apply callback functions when JavaScript is reenabled.</div>
     <div id="indicator"><span id="enabled-state" class="instructions label"></span><span id="disabled-state" class="instructions label"><noscript>Turn on JavaScript first and reload the page</noscript></span></div>
     </div>
 </div>
@@ -330,22 +330,12 @@ only screen and (                min-resolution: 2dppx)  and (min-width: 700px) 
             <div><pre>&lt;noscript&gt;You can see this message as soon as JavaScript is disabled.&lt;/noscript&gt;
 &lt;script src="instano.js"&gt;&lt;/script&gt;
 &lt;script&gt;
-    instano().init();
+    instano();
 &lt;/script&gt;</pre></div>
         </div>
     </div>
-    <div class="features">Run JavaScript AFTER it is disabled (Experimental)</div>
+    <div class="features">Apply REENABLED callback function</div>
     <div class="compare">
-        <div class="compare-setInterval">
-            <div class="compare-head">
-                <div class="big-title compare-title">setInterval</div>
-                <div id="setInterval-example" class="compare-result"></div>
-            </div>
-            <div class="clear"></div>
-            <div><pre>setInterval(function() {
-    document.getElementById("setInterval-example").innerHTML = new Date().toLocaleString();
-}, 0);</pre></div>
-        </div>
         <div class="compare-instano">
             <div class="compare-head">
                 <div class="big-title compare-title">instano.js</div>
@@ -353,9 +343,11 @@ only screen and (                min-resolution: 2dppx)  and (min-width: 700px) 
             </div>
             <div class="clear"></div>
             <div><pre>
-instano().disabled(function() {
-    document.getElementById("instano-callback-example").innerHTML = new Date().toLocaleString();
-}, "setInterval", 0);</pre></div>
+instano({
+    reenabledCallback:function(){
+        alert("JavaScript is reenabled.");
+    }
+});</pre></div>
     	</div>
     </div>
     <div class="title">DOWNLOAD</div>
@@ -411,7 +403,7 @@ instano().disabled(function() {
 	//-->
 	//]]>
 	document.write("&gt;");
-	</script> with the help from <a href="http://naugtur.pl" target="_blank">Zbyszek</a></p>
+	</script> and <a href="http://naugtur.pl" target="_blank">Zbyszek</a></p>
     <div class="title">LICENSE</div>
     <p>instano.js is freely distributable under the terms of the MIT license.</p>
 </div>
@@ -419,14 +411,14 @@ instano().disabled(function() {
 <script>
 document.getElementById("enabled-state").innerHTML = "Turn off JavaScript now and see the difference";
 document.getElementById("disabled-state").style.display = "none";
-setInterval(function() {
-	document.getElementById("setInterval-example").innerHTML = new Date().toLocaleString();
-	document.getElementById("instano-callback-example").innerHTML = new Date().toLocaleString();
-}, 0);
-instano(["banner-message","sublogo","instano-example"]).init(16,"block")
-.disabled(function() {
-	document.getElementById("instano-callback-example").innerHTML = new Date().toLocaleString();
-}, "setInterval", 0);
+instano({
+	indicator:["banner-message","sublogo","instano-example"],
+	interval:16,
+	displayStyle:"block",
+	reenabledCallback:function(){
+		alert("JavaScript is reenabled.");
+	}
+});
 </script>
 <script type="text/javascript">
 
