@@ -5,21 +5,21 @@
  * license : MIT
  */
 
-var instano = (function (el) {
+var instano = (function (el,settings) {
 	
 	/* Testing for CSS animation support 
 	***************************************************************************/
 	
-	var animation = false,
+	var isAnimationSupported = false,
 		domPrefixes = 'Webkit Moz O ms Khtml'.split(' '),
 		testel = document.createElement('div');
 	
-	if(typeof testel.style.animationName !== "undefined") { animation = true; }    
+	if(typeof testel.style.animationName !== "undefined") { isAnimationSupported = true; }    
 	 
-	if( animation === false ) {
+	if( isAnimationSupported === false ) {
 	  for( var i = 0; i < domPrefixes.length; i++ ) {
 		if( typeof testel.style[ domPrefixes[i] + 'AnimationName' ] !== "undefined" ) {
-		  animation = true;
+		  isAnimationSupported = true;
 		  break;
 		}
 	  }
@@ -28,17 +28,19 @@ var instano = (function (el) {
 	/* Detect if JavaScript is reenabled (not supported by Opera)
 	***************************************************************************/
 	 
-	(function() {
-		var lastTime = 0;
-		var vendors = ['ms', 'moz', 'webkit', 'o'];
-		for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-			window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
-			window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] 
-									   || window[vendors[x]+'CancelRequestAnimationFrame'];
+	//requestAnimationFrame crossbrowser
+	reqFrame = (function() {
+		var lastTime = 0, 
+			vendors = ['ms', 'moz', 'webkit', 'o'],
+			reqFrame = window.requestAnimationFrame,
+			cancelFrame;
+
+		for(var x = 0; x < vendors.length && !reqFrame; ++x) {
+			reqFrame = window[vendors[x]+'RequestAnimationFrame'];
 		}
 	 
-		if (!window.requestAnimationFrame)
-			window.requestAnimationFrame = function(callback, element) {
+		if (!reqFrame)
+			reqFrame = function(callback, element) {
 				var currTime = new Date().getTime();
 				var timeToCall = Math.max(0, 16 - (currTime - lastTime));
 				var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
@@ -47,13 +49,12 @@ var instano = (function (el) {
 				return id;
 			};
 	 
-		if (!window.cancelAnimationFrame)
-			window.cancelAnimationFrame = function(id) {
-				clearTimeout(id);
-			};
-	}());
+		return reqFrame;
+	})();
 	
-	var continuousTime = new Date().getTime(), javascriptTime = new Date().getTime(), reportStatus = true, disabledDuration = 0, disabledCallback, disabledCallbackDelay,  disabledCallbackDuration, reenabledCallback, executeTimeout = false, executeInterval = false, executeTime;
+	var continuousTime = new Date().getTime(), javascriptTime = new Date().getTime(), reportStatus = true, 
+		disabledDuration = 0, disabledCallback, disabledCallbackDelay,  disabledCallbackDuration, 
+		reenabledCallback, executeTimeout = false, executeInterval = false, executeTime;
 	
 	function step(timestamp) {
 		continuousTime = new Date().getTime();
@@ -98,9 +99,10 @@ var instano = (function (el) {
 				executeTime = continuousTime + disabledCallbackDuration;
 			}
 		}
-		requestAnimationFrame(step);
+		reqFrame(step);
 	}
-	requestAnimationFrame(step);
+	//initialize 
+	reqFrame(step);
 	
 	setInterval(function() {
 		javascriptTime = new Date().getTime();
@@ -108,7 +110,7 @@ var instano = (function (el) {
 	
 	/* Create the CSS animation class
 	***************************************************************************/
-	if (animation) {
+	if (isAnimationSupported) {
 		var css = 
 		'.nojs_init { position:relative; display:inline-block; vertical-align:top; animation:nojs-animation 0.2s step-end; -moz-animation:nojs-animation 0.2s step-end; -webkit-animation:nojs-animation 0.2s step-end;  -o-animation:nojs-animation 0.2s step-end; } ' + 
 		'@keyframes nojs-animation { from {width:0px;height:0px;visibility:hidden;opacity:0;} to {width:1px;height:1px;visibility:visible;opacity:1;} } ' + 
@@ -139,7 +141,7 @@ var instano = (function (el) {
 			init: function(interval, displayStyle) {
 				interval = Math.round(typeof interval === "number" ? (interval >= 0 && interval <= 200 ?interval : 100) : 100);
 				displayStyle = displayStyle === "block" || displayStyle === "inline-block" ? displayStyle : "inline-block";
-				if (animation) {
+				if (isAnimationSupported) {
 					if (selectAll) {
 						// Find all the noscript tags
 						var nos = document.getElementsByTagName("noscript");
