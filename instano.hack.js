@@ -1,5 +1,5 @@
 /*
- * instano.hack.js - Instant NoScript Detection [hacker's edition]
+ * instano.hack.js - Instant NoScript Detection [hackers' edition]
  *
  * authors: Antony Lau and Zbyszek Tenerowicz
  * email: instano.js@gmail.com
