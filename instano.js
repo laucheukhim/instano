@@ -52,7 +52,7 @@
 			// JavaScript is reenabled
 			dd = 0;
 			if (typeof settings.reenabledCallback === "function") settings.reenabledCallback(); // apply callback
-			setTimeout(function(){t2update()}, 16); // restart update
+			setTimeout(function(){t2update()}, 5); // restart update
 		}
 	}
 	setInterval(function(){t1update()}, 16);
@@ -60,9 +60,9 @@
 	// Update timestamp with setTimeout (does not resume upon reenabling)
 	function t2update() {
 		t2 = Date.now();
-		setTimeout(function(){t2update()}, 16);
+		setTimeout(function(){t2update()}, 5);
 	}
-	setTimeout(function(){t2update()}, 16);
+	setTimeout(function(){t2update()}, 5);
 
 /* Create the CSS animation class
 ***************************************************************************/
