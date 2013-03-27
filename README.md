@@ -11,8 +11,6 @@ A CSS animation is used to display the message and a `setInterval` continuously 
 
 Aslo, callback functions can be applied upon reenabling of JavaScript.
 
-Hackers' edition (instano.hack.js): Callback functions can be applied upon both disabling and reenabling of JavaScript by taking advantage of `requestAnimationFrame` to keep JavaScript running.
-
 See it in action: http://laucheukhim.github.com/instano/
 
 ## Basic Usage
@@ -69,8 +67,12 @@ To specify the detection frequency and the display style of the messages, provid
     instano({
     	reenabledCallback:function(){}
     	})
-    
+
 This tells instano.js to run a function when JavaScript is reenabled.
+
+###Hackers' edition (instano.hack.js)
+
+Callback functions can be applied upon both disabling and reenabling of JavaScript by taking advantage of `requestAnimationFrame` to keep JavaScript running.
 
     instano({
         disabledCallback:function(){},
@@ -79,4 +81,4 @@ This tells instano.js to run a function when JavaScript is reenabled.
         reenabledCallback:function(){}
         })
 
-Hackers' edition (instano.hack.js): This tells instano.hack.js to run a function when JavaScript is disabled and/or reenabled. The disabled callback function runs immediately after JavaScript is disabled. You can also run it after a delay or set it to run in repeating intervals by passing relevant parameters to disabledCallbackDelay and disabledCallbackDuration.
+This tells instano.hack.js to run a function when JavaScript is disabled and/or reenabled. The disabled callback function runs immediately after JavaScript is disabled. You can also run it after a delay or set it to run in repeating intervals by passing relevant parameters to disabledCallbackDelay and disabledCallbackDuration.
