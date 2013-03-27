@@ -1,5 +1,5 @@
 /*
- * instano.js - Instant NoScript Detection
+ * instano.hack.js - Instant NoScript Detection [hacker's edition]
  *
  * authors: Antony Lau and Zbyszek Tenerowicz
  * email: instano.js@gmail.com
@@ -11,20 +11,13 @@
 
  	settings || (settings = {});
 
-<<<<<<< HEAD
-    settings.interval || (settings.interval = 100); //testing for falsy adds benefit of not accepting 0 :)
+    settings.interval || (settings.interval = 100); // rejects 0
 	(settings.displayStyle && settings.displayStyle === "block") || (settings.displayStyle = "inline-block");
 	settings.indicator || (settings.indicator = false);
 	//settings.reenabledCallback
 	//settings.disabledCallback
 	(settings.disabledCallbackDelay === "setTimeout" || settings.disabledCallbackDelay === "setInterval") || (settings.disabledCallbackDelay = false);
 	(typeof settings.disabledCallbackDuration === "number" && settings.disabledCallbackDuration >= 0) || (settings.disabledCallbackDuration = false);
-=======
-    settings.interval || (settings.interval = 100); // rejects 0
-	(settings.displayStyle && settings.displayStyle === "block") || (settings.displayStyle = "inline-block");
-	settings.indicator || (settings.indicator = false);
-	//settings.reenabledCallback
->>>>>>> Established future-proof detection of reenabling JavaScript
 
 
 
@@ -48,8 +41,7 @@
 		}
 	}
 
-<<<<<<< HEAD
-/* Detect if JavaScript is reenabled (not supported by Opera)
+/* Detect if JavaScript is disabled and reenabled (not supported by Opera)
 ***************************************************************************/
 
 	//requestAnimationFrame crossbrowser
@@ -64,7 +56,7 @@
 
 		if (!reqFrame){
 			reqFrame = function(callback, element) {
-				var currTime = new Date().getTime();
+				var currTime = Date.now();
 				var timeToCall = Math.max(0, 16 - (currTime - lastTime));
 				var id = window.setTimeout(function() { callback(currTime + timeToCall); }, 
 					timeToCall);
@@ -76,11 +68,11 @@
 		return reqFrame;
 	})();
 
-	var continuousTime = new Date().getTime(), javascriptTime = new Date().getTime(), reportStatus = true, 
+	var continuousTime = Date.now(), javascriptTime = Date.now(), reportStatus = true, 
 	disabledDuration = 0, executeTimeout = false, executeInterval = false, executeTime;
 
 	function step(timestamp) {
-		continuousTime = new Date().getTime();
+		continuousTime = Date.now();
 		if (reportStatus) {
 			if ((continuousTime - javascriptTime) >= 500) {
 				disabledDuration++;
@@ -127,37 +119,10 @@
 	//initialize 
 	reqFrame(step);
 
-	//[naugtur] and what do we need that for exactly?
+	// standard reference timestamp
 	setInterval(function() {
-		javascriptTime = new Date().getTime();
+		javascriptTime = Date.now();
 	}, 16);
-=======
-/* Detect if JavaScript is reenabled
-***************************************************************************/
-	var t1 = Date.now(),
-		t2 = Date.now(),
-		dd = 0;
-
-	// Update timestamp with setInterval (resume upon reenabling)
-	function t1update() {
-		t1 = Date.now();
-		dd = (t1 - t2) > 150 ? dd+1 : 0;
-		if (dd > 5) {
-			// JavaScript is reenabled
-			dd = 0;
-			if (typeof settings.reenabledCallback === "function") settings.reenabledCallback(); // apply callback
-			setTimeout(function(){t2update()}, 100); // restart update
-		}
-	}
-	setInterval(function(){t1update()}, 100);
-	
-	// Update timestamp with setTimeout (does not resume upon reenabling)
-	function t2update() {
-		t2 = Date.now();
-		setTimeout(function(){t2update()}, 100);
-	}
-	setTimeout(function(){t2update()}, 100);
->>>>>>> Established future-proof detection of reenabling JavaScript
 
 /* Create the CSS animation class
 ***************************************************************************/
@@ -186,15 +151,9 @@
 	// Check if object o is a DOM element
 	function isElement(o){
 		return (
-<<<<<<< HEAD
-	            typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
-	            o && typeof o === "object" && o.nodeType === 1 && typeof o.nodeName==="string"
-	            );
-=======
 			typeof HTMLElement === "object" ? o instanceof HTMLElement : //DOM2
 			o && typeof o === "object" && o.nodeType === 1 && typeof o.nodeName==="string"
 		);
->>>>>>> Established future-proof detection of reenabling JavaScript
 	}
 
 	//inits
@@ -242,10 +201,6 @@
 	            elreplace[i].parent.replaceChild(elreplace[i].newel, elreplace[i].original);
 	        }
 	        // Continuously replace element to stop animation
-<<<<<<< HEAD
-	        // WARNING: An interval of 0 is found to be CPU intensive. Choose it wisely.
-=======
->>>>>>> Established future-proof detection of reenabling JavaScript
 	        setInterval(function() {
 	        	for (var i in elreplace) {
 	        		var el = document.getElementById(elreplace[i].newel.id);
@@ -258,8 +213,4 @@
 	}
 	//init-end
 
-<<<<<<< HEAD
 });
-=======
-});
->>>>>>> Established future-proof detection of reenabling JavaScript
