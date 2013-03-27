@@ -3,13 +3,15 @@ instano
 
 instano.js - Instant NoScript Detection
 
-> instano.js is in Pre-Alpha stage. Development use only.
+> instano.js is in Alpha stage. Development use only.
 
 instano.js allows you to instantly detect if JavaScript is disabled after the page is loaded. It modifies the standard `<noscript>` tags so that the messages inside can be shown immediately whenever JavaScript is disabled.
 
 A CSS animation is used to display the message and a `setInterval` continuously stops the animation. Once JavaScript is disabled, the animation kicks in and the message is shown.
 
-[Experimental]: Callback functions can be applied upon disabling and reenabling of JavaScript by taking advantage of the possible loophole that JavaScript continues to run under `requestAnimationFrame`.
+Aslo, callback functions can be applied upon reenabling of JavaScript.
+
+Hackers' edition (instano.hack.js): Callback functions can be applied upon both disabling and reenabling of JavaScript by taking advantage of `requestAnimationFrame` to keep JavaScript running.
 
 See it in action: http://laucheukhim.github.com/instano/
 
@@ -68,4 +70,13 @@ To specify the detection frequency and the display style of the messages, provid
     	reenabledCallback:function(){}
     	})
     
-This tells instano.js to run a function when JavaScript is reenabled. 
+This tells instano.js to run a function when JavaScript is reenabled.
+
+    instano({
+        disabledCallback:function(){},
+        [disabledCallbackDelay: <setTimeout or setInterval>,]
+        [disabledCallbackDuration: <duration in miliseconds>,]
+        reenabledCallback:function(){}
+        })
+
+Hackers' edition (instano.hack.js): This tells instano.hack.js to run a function when JavaScript is disabled and/or reenabled. The disabled callback function runs immediately after JavaScript is disabled. You can also run it after a delay or set it to run in repeating intervals by passing relevant parameters to disabledCallbackDelay and disabledCallbackDuration.
