@@ -48,7 +48,7 @@
 	function t1update() {
 		t1 = Date.now();
 		dd = (t1 - t2) > 500 ? dd+1 : 0;
-		if (dd > 5) {
+		if (dd > 10) {
 			// JavaScript is reenabled
 			dd = 0;
 			if (typeof settings.reenabledCallback === "function") settings.reenabledCallback(); // apply callback
