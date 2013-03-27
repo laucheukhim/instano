@@ -47,22 +47,22 @@
 	// Update timestamp with setInterval (resume upon reenabling)
 	function t1update() {
 		t1 = Date.now();
-		dd = (t1 - t2) > 500 ? dd+1 : 0;
+		dd = (t1 - t2) > 1000 ? dd+1 : 0;
 		if (dd > 10) {
 			// JavaScript is reenabled
 			dd = 0;
 			if (typeof settings.reenabledCallback === "function") settings.reenabledCallback(); // apply callback
-			setTimeout(function(){t2update()}, 100); // restart update
+			setTimeout(function(){t2update()}, 16); // restart update
 		}
 	}
-	setInterval(function(){t1update()}, 100);
+	setInterval(function(){t1update()}, 16);
 	
 	// Update timestamp with setTimeout (does not resume upon reenabling)
 	function t2update() {
 		t2 = Date.now();
-		setTimeout(function(){t2update()}, 100);
+		setTimeout(function(){t2update()}, 16);
 	}
-	setTimeout(function(){t2update()}, 100);
+	setTimeout(function(){t2update()}, 16);
 
 /* Create the CSS animation class
 ***************************************************************************/
