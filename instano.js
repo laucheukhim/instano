@@ -41,28 +41,28 @@
 /* Detect if JavaScript is reenabled
 ***************************************************************************/
 	var t1 = Date.now(),
-		t2 = Date.now(),
+		t1p = t1,
 		dd = 0;
-
-	// Update timestamp with setInterval (resume upon reenabling)
-	function t1update() {
-		t1 = Date.now();
-		dd = (t1 - t2) > 1000 ? dd+1 : 0;
-		if (dd > 20) {
+	
+	// Detect if timestamp is updated with setInterval (resume upon reenabling)
+	function t1check() {
+		dd = t1 === t1p ? dd+1 : 0;
+		if (dd >= 4) {
 			// JavaScript is reenabled
 			dd = 0;
 			if (typeof settings.reenabledCallback === "function") settings.reenabledCallback(); // apply callback
-			setTimeout(function(){t2update()}, 5); // restart update
+			setTimeout(function(){t1update()}, 40); // restart update
 		}
+		t1p = t1;
 	}
-	setInterval(function(){t1update()}, 16);
+	setInterval(function(){t1check()}, 100);
 	
 	// Update timestamp with setTimeout (does not resume upon reenabling)
-	function t2update() {
-		t2 = Date.now();
-		setTimeout(function(){t2update()}, 5);
+	function t1update() {
+		t1 = Date.now();
+		setTimeout(function(){t1update()}, 40);
 	}
-	setTimeout(function(){t2update()}, 5);
+	setTimeout(function(){t1update()}, 40);
 
 /* Create the CSS animation class
 ***************************************************************************/
