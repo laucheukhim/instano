@@ -19,10 +19,6 @@
 	(settings.disabledCallbackDelay === "setTimeout" || settings.disabledCallbackDelay === "setInterval") || (settings.disabledCallbackDelay = false);
 	(typeof settings.disabledCallbackDuration === "number" && settings.disabledCallbackDuration >= 0) || (settings.disabledCallbackDuration = false);
 
-
-
-
-
 /* Testing for CSS animation support 
 ***************************************************************************/
 
@@ -208,8 +204,15 @@
 	        		el.parentNode.replaceChild(newone, el);
 	        	}
 	        }, settings.interval);
+            // Bug fix for https://github.com/laucheukhim/instano/issues/3
+            // Stop noscript tags from showing up in Firefox while reloading
+            window.addEventListener("beforeunload", function() {
+                for (var i in elreplace) {
+                    var el = document.getElementById(elreplace[i].newel.id);
+                    el.style.display = "none";
+                }
+            });
 	    }
-
 	}
 	//init-end
 
