@@ -204,13 +204,28 @@
 	        		el.parentNode.replaceChild(newone, el);
 	        	}
 	        }, settings.interval);
-            // Bug fix for https://github.com/laucheukhim/instano/issues/3
+            // Bug fix for #3
             // Stop noscript tags from showing up in Firefox while reloading
             window.addEventListener("beforeunload", function() {
+                // Hide all the noscript tags since in Firefox JavaScript will
+                // stop running momentarily before the page is reloaded
                 for (var i in elreplace) {
                     var el = document.getElementById(elreplace[i].newel.id);
                     el.style.display = "none";
                 }
+                // But in case the user canceled the reload in the onbeforeunload
+                // prompt, restore the noscript tags so they will work again
+                // Use two timeouts to detect cancellation. The first timeout will
+                // not fire until the prompt is dismissed and the second timeout
+                // will only fire when the prompt is cancelled.
+                setTimeout(function() {
+                    setTimeout(function() {
+                        for (var i in elreplace) {
+                            var el = document.getElementById(elreplace[i].newel.id);
+                            el.style.display = settings.displayStyle;
+                        }
+                    }, 0);
+                }, 0);
             });
 	    }
 	}
