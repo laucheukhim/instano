@@ -70,7 +70,7 @@ To specify the detection frequency and the display style of the messages, provid
 
 This tells instano.js to run a function when JavaScript is reenabled.
 
-###Hackers' edition (instano.hack.js)
+### Hackers' edition (instano.hack.js)
 
 Callback functions can be applied upon both disabling and reenabling of JavaScript by taking advantage of `requestAnimationFrame` to keep JavaScript running.
 
