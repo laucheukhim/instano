@@ -11,7 +11,7 @@ A CSS animation is used to display the message and a `setInterval` continuously 
 
 Also, callback functions can be applied upon reenabling of JavaScript.
 
-See it in action: http://laucheukhim.github.com/instano/
+See it in action: http://laucheukhim.github.io/instano/
 
 ## Basic Usage
 
